@@ -51,163 +51,164 @@
 
         function LoadGrid(G) {
             var GridCol = [];
-            var arr2D = "";
+            var arr2D = ""; //an array of 6 row arrays to show in the 'arrayView2D' text box
             Grid = [];
-            //Load a 1D array from above into a 2D array called "Grid"
-            for (let j = 0; j < GridSize; j++) { //Row loop - like the "y" coordinates
-                for (let i = 0; i < GridSize; i++) { //Column loop - like the "x" coordinates
-                    GridCol.push(G[j * GridSize + i]); // load the column elements into this temporary array
+            //Load a 1D array from above into a 2D array called "Grid" 
+            for (let j = 0; j < GridSize; j++) { //Row loop - like the "y" coordinates 
+                for (let i = 0; i < GridSize; i++) { //Column loop - like the "x" coordinates 
+                    GridCol.push(G[j * GridSize + i]); // load the column elements into this temporary array 
                 }
-                arr2D = arr2D + "Grid[" + j + "] = [" + GridCol + "]" + "\n";
-                Grid.push(GridCol); // push a column array for each row
-                GridCol = []; // clear this array ready for the next row
+                arr2D = arr2D + "Grid[" + j + "] = [" + GridCol + "]" + "\n"; // concatenate the [] symbols and a line break
+                Grid.push(GridCol); // push a column array for each row 
+                GridCol = []; // clear this array ready for the next row 
             }
-            document.getElementById('arrayView2D').value = arr2D; //shows the full array but not as an array or 6 arrays
-            document.getElementById('arrayViewCell').value = Grid[4][3]; //Row then Column
-            //display the array in the boxes on the HTML page
-            for (let j = 0; j < Row; j++) { //Row loop - like the "y" coordinates
-                for (let i = 0; i < Col; i++) { //Column loop - like the "x" coordinates
-                    document.getElementById('B' + (i + 1) + (j + 1)).value = G[j * Col + i]; // Nested loops
-                }
-            }
+            document.getElementById('arrayView2D').value = arr2D; //shows the full array but not as an array or 6 arrays 
+            DisplayGrid(Grid);
         }
 
         function DisplayGrid(G2D) {
-            for (let j = 0; j < GridSize; j++) {
-                for (let i = 0; i < GridSize; i++) {
-                    document.getElementById('B' + (i + 1) + (j + 1)).value = G2D[j][i];
+            //display the array in the boxes on the HTML page
+            for (let j = 0; j < GridSize; j++) { //Row loop - like the "y" coordinates
+                for (let i = 0; i < GridSize; i++) { //Column loop - like the "x" coordinates
+                    document.getElementById('B' + (i + 1) + (j + 1)).value = G2D[j][i]; // Nested loops
                 }
             }
         }
 
-        function BinaryPuzzleSolver() {  //Code the top level module here
-            //add loop for testing to avoid infinite false
-            let i = 1;          //temporary variable until true false working
-            Solved = false;     //initial setting
+        function BinaryPuzzleSolver() {  //Code the top level module here 
+            //loop for testing to avoid infinite false
+            let i = 1;             //temporary variable until true false working
+            Solved = false;        //initial setting
             while (Solved == false && i < 3) {
                 Solved = SolvePuzzle(Grid);
                 window.alert('Main "BinaryPuzzleSolver" - Solved = ' + Solved + '. Loop # ' + i + '.');
                 i++;
             }
         }
-        function SolvePuzzle(G2D) { //See structure chart for what goes here
+        function SolvePuzzle(G2D) { //See structure chart for what goes here 
             SolveNumberPairs();
-            SolverNumberTrios();
-            if (CompleteRowsCols()) {
+            SolveNumberTrios();
+            if (CompleteRowsCols()) { //returns true or false
+                //window.alert('Sub "SolvePuzzle" TEST MSG ONLY - 1 in row 1 col 2 - "solved". ');
                 return true;
             } else {
+                //window.alert('Sub "SolvePuzzle" TEST MSG ONLY - "NOT solved yet"!');
                 return false;
             }
         }
-        function SolveNumberPairs() { // call row and column
+        function SolveNumberPairs() { // call row and column, will take two pushes of the button to update all vertical and horizontal row pairs
             SolveRowPairs();
             SolveColPairs();
         }
-        function SolveRowPairs() { // See pseudocode in Q22f for the row part here
-            for (let Row = 0; Row < GridSize; Row++) {
-                for (let Col = 0; Col < GridSize - 1; Col++) {
+        function SolveRowPairs() {
+            for (let Row = 0; Row < GridSize; Row++) { // 0 - 5 does the bottom row
+                for (let Col = 0; Col < GridSize - 1; Col++) { //0 - 4 is enough to find a 4-5 pair
                     if (Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row][Col + 1]) {
-                        if (Col > 0) {
-                            Grid[Row][Col - 1] = (1 - Grid[Row][Col]);
+                        if (Col > 0) { // is there a space to the left?
+                            Grid[Row][Col - 1] = (1 - Grid[Row][Col]); // inserts to the left of the pair
                         }
-                        if (Col < GridSize - 2) {
-                            Grid[Row][Col + 2] = (1 - Grid[Row][Col]);
+                        if (Col < GridSize - 2) { // is there a space to the right?
+                            Grid[Row][Col + 2] = (1 - Grid[Row][Col]); // inserts to the right of the pair
                         }
                     }
                 }
             }
-            document.getElementById('arrayView2D').value = Grid;
-            document.getElementById('arrayViewCell').value = Grid[4][3];
-            DisplayGrid(Grid);       
+            // document.getElementById('arrayView2D').value = Grid;
+            DisplayGrid(Grid); // send the updated grid to the screen
         }
-        function SolveColPairs() { // Similar to column pairs
-            for (let Col = 0; Col < GridSize; Col++) {
-                for (let Row = 0; Row < GridSize - 1; Row++) {
+
+        function SolveColPairs() { // Similar to row pairs 
+            for (let Col = 0; Col < GridSize; Col++) { // 0 - 5 does the bottom row
+                for (let Row = 0; Row < GridSize - 1; Row++) { // 0 - 4 is enough to find a 4-5 pair
                     if (Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row + 1][Col]) {
-                        if (Row > 0) {
-                            Grid[Row - 1][Col] = (1 - Grid[Row][Col]);
+                        if (Row > 0) { // is there a space above?
+                            Grid[Row - 1][Col] = (1 - Grid[Row][Col]); // inserts number above the pair
                         }
-                        if (Row < GridSize - 2) {
-                            Grid[Row + 2][Col] = (1 - Grid[Row][Col]);
+                        if (Row < GridSize - 2) { // is there a space below?
+                            Grid[Row + 2][Col] = (1 - Grid[Row][Col]); // inserts number below the pair
                         }
                     }
                 }
             }
-            DisplayGrid(Grid);
+            //document.getElementById('arrayView2D').value = Grid;
+            DisplayGrid(Grid); // send the updated grid to the screen
         }
+
         function SolveNumberTrios() {
-            for(let Row = 0; Row < GridSize; Row++) {
-                for(let Col = 0; Col < GridSize - 2; Col++) {
-                    if(Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row][Col + 2]) {
-                        Grid[Row][Col + 1] = (1 - Grid[Row][Col]);
+            for (let Row = 0; Row < GridSize; Row++) { // 0 - 5 does the bottom row
+                for (let Col = 0; Col < GridSize - 2; Col++) { // 0 - 3 is enough to find a 3-5 trio
+                    if (Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row][Col + 2]) {
+                        Grid[Row][Col + 1] = (1 - Grid[Row][Col]); // inserts between the trio
                     }
                 }
             }
-
-            for(let Col = 0; Col < GridSize; Col++) {
-                for(let Row = 0; Row < GridSize - 2; Row++) {
-                    if(Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row + 2][Col]) {
-                        Grid[Row + 1][Col] = (1 - Grid[Row][Col]);
+            for (let Col = 0; Col < GridSize; Col++) { // 0 - 5 does the bottom row
+                for (let Row = 0; Row < GridSize - 2; Row++) { // 0 - 3 is enough to find a 3-5 trio
+                    if (Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row + 2][Col]) {
+                        Grid[Row + 1][Col] = (1 - Grid[Row][Col]); // inserts between the trio
                     }
                 }
             }
-            DisplayGrid(Grid);
-
+            DisplayGrid(Grid); //send updated grid to the screen
         }
+
         function CompleteRowsCols() {
-            let row1tot = 0;
-            let row0tot = 0;
-            for (let Row = 0; Row < GridSize; Row++) {
-                for (let Col = 0; Col < GridSize; Col++) {
-                    if (Grid[Row][Col] == 0) {
-                        row0tot = row1tot + 1;
+            //by row
+            let row1tot = 0; //count of 1's in the row
+            let row0tot = 0; //count of 0's in the row
+            for (let Row = 0; Row < GridSize; Row++) { // 0 - 5 does the bottom row
+                for (let Col = 0; Col < GridSize; Col++) { // go through the row for counting
+                    if (Grid[Row][Col] == 0) { // count 0's
+                        row0tot++;
                     }
-                    if (Grid[Row][Col] == 1) {
-                        row1tot = row1tot + 1;
+                    if (Grid[Row][Col] == 1) { // count 1's
+                        row1tot++;
                     }
                 }
-                for (let Col = 0; Col < GridSize; Col++) {
+                for (let Col = 0; Col < GridSize; Col++) { // go through the row to update the nulls
                     if (Grid[Row][Col] == null && row0tot == 3) {
-                        Grid[Row][Col] = 1;
+                        Grid[Row][Col] = 1; // inserts a 1
                     }
                     if (Grid[Row][Col] == null && row1tot == 3) {
-                        Grid[Row][Col] = 0;
+                        Grid[Row][Col] = 0; //inserts a 0
                     }
                 }
-                row1tot = 0
+                //reset after going through each row
+                row1tot = 0;
                 row0tot = 0;
             }
-
+            //by column
             let col1tot = 0;
             let col0tot = 0;
-            let colComplete = 0;
-            for (let Col = 0; Col < GridSize; Col++) {
-                for (let Row = 0; Row < GridSize; Row++) {
-                    if (Grid[Row][Col] == 0) {
-                        col0tot = col0tot + 1;
+            let colComplete = 0; //count if tere are 3 0's and 3 1's
+            for (let Col = 0; Col < GridSize; Col++) { // 0 - 5 does the right col
+                for (let Row = 0; Row < GridSize; Row++) { // go through the column for counting
+                    if (Grid[Row][Col] == 0) { // count 0's
+                        col0tot++;
                     }
-                    if (Grid[Row][Col] == 1) {
-                        col1tot = col1tot + 1;
+                    if (Grid[Row][Col] == 1) { // count 1's
+                        col1tot++;
                     }
                 }
-                for (let Row = 0; Row < GridSize; Row++) {
+                for (let Row = 0; Row < GridSize; Row++) { // go through the column to update the nulls
                     if (Grid[Row][Col] == null && col0tot == 3) {
-                        Grid[Row][Col] = 1;
-                        col1tot = col1tot + 1;
+                        Grid[Row][Col] = 1; // inserts a 1
+                        col1tot++;
                     }
                     if (Grid[Row][Col] == null && col1tot == 3) {
-                        Grid[Row][Col] = 0;
-                        col0tot = col0tot + 1;
+                        Grid[Row][Col] = 0; //inserts a 0
+                        col0tot++
                     }
                 }
                 if (col1tot == 3 && col0tot == 3) {
-                    colComplete = colComplete + 1;
+                    colComplete++;
                 }
-                col1tot = 0
+                //reset after going through each row
+                col1tot = 0;
                 col0tot = 0;
             }
-            DisplayGrid(Grid);
-            document.getElemenetById('arrayViewCell').value = colComplete;
+            DisplayGrid(Grid); // send updated grid to the screen!
+            document.getElementById('arrayViewCell').value = colComplete; //test if columns are completed
             if (colComplete == GridSize) {
                 return true;
             }

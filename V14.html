@@ -63,14 +63,8 @@
                 GridCol = []; // clear this array ready for the next row
             }
             document.getElementById('arrayView2D').value = arr2D; //shows the full array but not as an array or 6 arrays
-            document.getElementById('arrayViewCell').value = Grid[4][3]; //Row then Column
-            //display the array in the boxes on the HTML page
-            for (let j = 0; j < Row; j++) { //Row loop - like the "y" coordinates
-                for (let i = 0; i < Col; i++) { //Column loop - like the "x" coordinates
-                    document.getElementById('B' + (i + 1) + (j + 1)).value = G[j * Col + i]; // Nested loops
-                }
+            DisplayGrid(Grid);
             }
-        }
 
         function DisplayGrid(G2D) {
             for (let j = 0; j < GridSize; j++) {
