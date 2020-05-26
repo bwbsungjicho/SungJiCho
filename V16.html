@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>V13 Binary Puzzle 6x6</title>
+    <title>V15 Binary Puzzle 6x6</title>
     <style type="text/css">
         /* CSS in the same file initially because it's minimal */
         /* 30/7/19 Rain Holloway - to eliminate double lines */
@@ -91,12 +91,13 @@
             }
         }
         function SolvePuzzle(G2D) { //See structure chart for what goes here
-            if (G2D[0][1] == 1) {   //row 1, col 2
-                window.alert('Sub "SolvePuzzle" TEST MSG ONLY - 1 in row 1 col 2 - "solved". ');
+            SolveNumberPairs();
+            SolverNumberTrios();
+            if (CompleteRowsCols()) {
                 return true;
+            } else {
+                return false;
             }
-            window.alert('Sub "SolvePuzzle" TEST MSG ONLY - "NOT solved yet"!');
-            return false;
         }
         function SolveNumberPairs() { // call row and column
             SolveRowPairs();
@@ -154,7 +155,62 @@
 
         }
         function CompleteRowsCols() {
-            window.alert('CompleteRowsCols has not been coded yet');
+            let row1tot = 0;
+            let row0tot = 0;
+            for (let Row = 0; Row < GridSize; Row++) {
+                for (let Col = 0; Col < GridSize; Col++) {
+                    if (Grid[Row][Col] == 0) {
+                        row0tot = row1tot + 1;
+                    }
+                    if (Grid[Row][Col] == 1) {
+                        row1tot = row1tot + 1;
+                    }
+                }
+                for (let Col = 0; Col < GridSize; Col++) {
+                    if (Grid[Row][Col] == null && row0tot == 3) {
+                        Grid[Row][Col] = 1;
+                    }
+                    if (Grid[Row][Col] == null && row1tot == 3) {
+                        Grid[Row][Col] = 0;
+                    }
+                }
+                row1tot = 0
+                row0tot = 0;
+            }
+
+            let col1tot = 0;
+            let col0tot = 0;
+            let colComplete = 0;
+            for (let Col = 0; Col < GridSize; Col++) {
+                for (let Row = 0; Row < GridSize; Row++) {
+                    if (Grid[Row][Col] == 0) {
+                        col0tot = col0tot + 1;
+                    }
+                    if (Grid[Row][Col] == 1) {
+                        col1tot = col1tot + 1;
+                    }
+                }
+                for (let Row = 0; Row < GridSize; Row++) {
+                    if (Grid[Row][Col] == null && col0tot == 3) {
+                        Grid[Row][Col] = 1;
+                        col1tot = col1tot + 1;
+                    }
+                    if (Grid[Row][Col] == null && col1tot == 3) {
+                        Grid[Row][Col] = 0;
+                        col0tot = col0tot + 1;
+                    }
+                }
+                if (col1tot == 3 && col0tot == 3) {
+                    colComplete = colComplete + 1;
+                }
+                col1tot = 0
+                col0tot = 0;
+            }
+            DisplayGrid(Grid);
+            document.getElemenetById('arrayViewCell').value = colComplete;
+            if (colComplete == GridSize) {
+                return true;
+            }
         }
     </script>
 </head>
@@ -163,7 +219,7 @@
     <!--3/8/19 "LoadGrid()" now changed to 2 nested loops -->
     <form id="input">
         <h1>6x6 Binary Puzzle Game</h1>
-        <h2>V13</h2>
+        <h2>V15</h2>
         LOAD a grid:
         <select id="cboPuzNo" onchange="LoadGrid(eval(value))">
             <!--<select id="cboPuzNo">-->
