@@ -122,7 +122,7 @@
         function SolveColPairs() { // Similar to column pairs
             GridSize = 6;
             for (let Col = 0; Col < GridSize; Col++) {
-                for (let Row = 0; Row < GridSize - 1; Row++) {
+                for (let Row = 0; Row < GridSize - 1; Col++) {
                     if (Grid[Row][Col] !== null && Grid[Row][Col] == Grid[Row + 1][Col]) {
                         if (Row > 0) {
                             Grid[Row - 1][Col] = (1 - Grid[Row][Col]);

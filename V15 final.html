@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>V16 Binary Puzzle 6x6</title>
+    <title>V15 Binary Puzzle 6x6</title>
     <style type="text/css">
         /* CSS in the same file initially because it's minimal */
         /* 30/7/19 Rain Holloway - to eliminate double lines */
@@ -215,12 +215,12 @@
         }
     </script>
 </head>
-<body onload="LoadGrid(G01)">
+<body onload="LoadGrid(G01)" style="background-color:#c2e6fc">
     <!--Parameter for initial load can be changed manually-->
     <!--3/8/19 "LoadGrid()" now changed to 2 nested loops -->
     <form id="input">
         <h1>6x6 Binary Puzzle Game</h1>
-        <h2>V16 (final)</h2>
+        <h2>V15 (final and fixed)</h2>
         LOAD a grid:
         <select id="cboPuzNo" onchange="LoadGrid(eval(value))">
             <!--<select id="cboPuzNo">-->
@@ -241,13 +241,13 @@
         </select>
         <!--<input type="button" value="Load" onclick="LoadGrid(GT)" />&nbsp;&nbsp;-->
         <br />
-        <input type="button" value="--- Solve repeat ---" onclick="BinaryPuzzleSolver()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-        <input type="button" value="--- Solve once ---" onclick="SolvePuzzle(Grid)" />&nbsp;&nbsp;<br />
-        <input type="button" value="Pairs" onclick="SolveNumberPairs()" />&nbsp;
-        <input type="button" value="RowPairs" onclick="SolveRowPairs()" />&nbsp;
-        <input type="button" value="ColPairs" onclick="SolveColPairs()" />&nbsp;
-        <input type="button" value="Trios" onclick="SolveNumberTrios()" />&nbsp;
-        <input type="button" value="Complete" onclick="CompleteRowsCols()" /><br />
+        <input type="button" value="--- Solve repeat ---" onclick="BinaryPuzzleSolver()" style="background-color:#8ad3ff"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        <input type="button" value="--- Solve once ---" onclick="SolvePuzzle(Grid)" style="background-color:#8ad3ff"/>&nbsp;&nbsp;<br />
+        <input type="button" value="Pairs" onclick="SolveNumberPairs()" style="background-color:#8ad3ff"/>&nbsp;
+        <input type="button" value="RowPairs" onclick="SolveRowPairs()"style="background-color:#8ad3ff" />&nbsp;
+        <input type="button" value="ColPairs" onclick="SolveColPairs()" style="background-color:#8ad3ff"/>&nbsp;
+        <input type="button" value="Trios" onclick="SolveNumberTrios()" style="background-color:#8ad3ff"/>&nbsp;
+        <input type="button" value="Complete" onclick="CompleteRowsCols()" style="background-color:#8ad3ff"/><br />
         <!--  3/8/19 Board cell labels have "B" for board, then column digit, then row digit"  -->
         <table class="gameboard">
             <tr>
